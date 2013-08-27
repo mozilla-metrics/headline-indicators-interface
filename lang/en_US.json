@@ -1,0 +1,39 @@
+{
+	"latest_version": "Firefox 23",
+	"chart_desktop_downloads": {
+		"what": "The number of requests sent to the Mozilla download server for a copy of the Firefox application (all channels).",
+		"how": "The downloads count is an absolute count of said requests during the course of a day for a given time period.  It only considers requests that are serviced by Mozilla.org's servers and hence does not include those serviced by mirrors or third-party locations."
+	},
+	"chart_desktop_adi": {
+		"what": "The metric Active Daily Installations (ADI) gives a sense of the size of Firefox's active user-base.",
+		"how": "Around once a day, Firefox sends a non-identifiable ping back to Mozilla from each running browser to update its blocklist.  A blocklist maintains a list of add-ons, plugins and other third-party software that Mozilla has identified as being errant.  Counting the number of so-called blocklist pings during the course of a day allows Mozilla to know the number of active daily installations. More: <a href='https://wiki.mozilla.org/Blocklisting'>https://wiki.mozilla.org/Blocklisting</a>"
+	},
+	"chart_desktop_uptake": {
+		"what": "The relative percentage of installations on each of the last four releases of Firefox.",
+		"how": "By splitting the blocklist pings received per day on the app_version parameter, we can get a sense of the proportion of installations that use the latest Firefox release as well as the three releases before it.  When a region or set of countries is selected, the daily uptake refers to the number of users in that region or set of countries as a percentage of all users on that day."
+	},
+	"chart_mobile_downloads": {
+		"what": "The number of requests sent to the Google Play download server for a copy of the Firefox Mobile application.",
+		"how": "The downloads count is an absolute count of said requests during the course of a day for a given time period."
+	},
+	"chart_mobile_adi": {
+		"what": "The metric Active Daily Installations (ADI) gives a sense of the size of Firefox Mobile's active user-base.",
+		"how": "Around once a day, Firefox sends a non-identifiable ping back to Mozilla from each running browser to update its blocklist.  A blocklist maintains a list of add-ons, plugins and other third-party software that Mozilla has identified as being errant.  Counting the number of so-called blocklist pings during the course of a day allows Mozilla to know the number of active daily installations.  More: <a href='https://wiki.mozilla.org/Blocklisting'>https://wiki.mozilla.org/Blocklisting</a>"
+	},
+	"chart_mobile_reviews": {
+		"what": "The absolute number of people who have given Firefox one of five possible ratings (1 to 5 stars) on Google Play.",
+		"how": "Each bar shows the number of users who have submitted a particular rating for Firefox Mobile since the application first went live on Google Play.  Since we currently have no automated way of getting this data, the data is updated on the first of every month."
+	},
+	"chart_fxos_activations": {
+		"what": "The number of users who have activated their Firefox OS phones.",
+		"how": "Currently being finalized."
+	},
+	"chart_fxos_adi": {
+		"what": "The metric Active Daily Installations (ADI) gives a sense of Firefox OS' user-base.  <!--Since it is likely that each installation of Firefox OS is owned by a single user, it is reasonable to refer to this metric as ADU rather than ADI.-->",
+		"how": "Currently being finalized."
+	},
+	"chart_fxos_uptake": {
+		"what": "The relative percentage of installations on each of the last four releases of Firefox OS.",
+		"how": "Currently being finalized."
+	}
+}
