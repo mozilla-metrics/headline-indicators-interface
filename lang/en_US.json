@@ -28,7 +28,7 @@
 		"what": "The number of users who have activated their Firefox OS phones.",
 		"how": "Currently being finalized."
 	},
-	"chart_fxos_adi": {
+	"chart_ffos_adi": {
 		"what": "The metric Active Daily Installations (ADI) gives a sense of Firefox OS' user-base.  <!--Since it is likely that each installation of Firefox OS is owned by a single user, it is reasonable to refer to this metric as ADU rather than ADI.-->",
 		"how": "Currently being finalized."
 	},

@@ -552,7 +552,7 @@ function switchViewToNumbers() {
 			
 		d3.json(the_file, function(data) {
 			//first, let's bypass the fxos charts for now
-			if(id == "chart_fxos_activations" || id == "chart_fxos_adi" || id == "chart_fxos_uptake") {
+			if(id == "chart_fxos_activations" || id == "chart_fxos_uptake") {
 				$("#" + id + " div")
 					.css("font-weight", "300")
 					.css("font-size", "12px")
