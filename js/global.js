@@ -549,6 +549,7 @@ function switchViewToNumbers() {
 		//load the "plus_countries" file if we chose a country
 		var the_file;
 		if(countries_str != "All" 
+				&& id != "chart_mobile_reviews"
 				//&& (id == "chart_desktop_downloads" || id == "chart_desktop_adi" || id == "chart_mobile_downloads" || id == "chart_mobile_adi" || id == "chart_desktop_uptake")
 			) {
 			the_file = "data/" + which_day() + "/" + id + "_plus_countries.json";
@@ -596,10 +597,11 @@ function switchViewToNumbers() {
 					+ "<div class='footnote shadow' style='height:18px'>worldwide users on " + LANG.latest_version + "</div></div>";
 			}
 			else if(id == "chart_ffos_devices") {
-				//for uptake, show max for latest version
-				//todo get the device with the max most recent count
-				//TODO
-				avg = d3.max(data.json_data[0].json_data, function(d) { return Number(d.count); });
+				//for uptake, show max for top device
+				//get the device with the max most recent count (can't do [0] because, ugh...json is not in expected format)
+				console.log(data.json_data);
+				avg = d3.max(data.json_data, function(d) { return Number(d.json_data[0].count); });
+				//avg = d3.max(data.json_data[0].json_data, function(d) { return Number(d.count); });
 				avg = getHumanSize(avg);
 				
 				html_content = "<div class='number_container'><div class='number shadow' style='height:80px'>" + avg + "<span class='last_letter'>%</span></div>"
@@ -689,6 +691,7 @@ function drawCharts() {
 			//load the "plus_countries" file if we chose a country
 			var the_file;
 			if(countries_str != "All" 
+					&& id != "chart_mobile_reviews"
 					//&& (id == "chart_desktop_downloads" || id == "chart_desktop_adi" || id == "chart_mobile_downloads" || id == "chart_mobile_adi" || id == "chart_desktop_uptake")
 				) {
 				the_file = "data/" + which_day() + "/" + id + "_plus_countries.json";
