@@ -18,6 +18,8 @@ var regions = new Object();
 	regions["EMEA"] 	= "AL,AD,AT,BY,BE,BA,BG,HR,CY,CZ,DK,DE,EE,FO,FI,FR,GE,DE,GI,GR,GG,HU,IS,IE,IM,IT,JE,LV,LI,LT,LU,MK,MT,FR,MD,MC,ME,NL,NO,PL,PT,RO,RU,SM,RS,ME,SK,SI,ES,SJ,SE,CH,TR,UA,GB,VA,AX,DZ,AO,BH,BJ,BW,BF,BI,CM,CV,CF,TD,KM,CG,CI,DJ,EG,GQ,ER,ET,GA,GM,GH,GN,GW,IR,IQ,IL,JO,KE,KW,LB,LS,LR,LY,MG,MW,ML,MR,MU,YT,MA,MZ,NA,NE,NG,OM,PS,QA,RW,RE,SH,ST,SA,SN,SC,SL,SO,ZA,SD,SZ,SY,TZ,TG,TN,UG,AE,EH,YE,ZM,ZW";
 	regions["SOAM"] 	= "AR,BO,BR,CL,CO,EC,FK,GF,GY,PY,PE,SR,UY,VE";
 	regions["NOAM"] 	= "AI,AG,AW,BS,BB,BZ,BM,VG,CA,KY,CR,CU,DM,DO,SV,GL,GD,GP,GT,HT,HN,JM,MQ,MS,MX,AN,NI,PA,PR,KN,LC,PM,VC,TT,TC,US,VI";
+
+var devices_to_show = ["LG-D300", "unagi1", "ALCATEL ONE TOUCH FIRE", "ZTE Open"];
 	
 $(document).ready(function () {	
 	//prepend the more info link to all charts
@@ -275,6 +277,7 @@ function assignEventListeners() {
 			$("#switch").attr("class", "charts");
 		
 			$("#uptake_legend").delay(500).fadeIn();
+			$("#ffos_uptake_legend").delay(500).fadeIn();
 			$(".hl_seperator").hide();
 		}
 		
@@ -322,6 +325,7 @@ function assignEventListeners() {
 				$("#switch").attr("class", "charts");
 		
 				$("#uptake_legend").delay(500).fadeIn();
+				$("#ffos_uptake_legend").delay(500).fadeIn();
 				$(".hl_seperator").hide();
 			}
 		}
@@ -383,6 +387,7 @@ function assignEventListeners() {
 			$("#switch").attr("class", "charts");
 		
 			$("#uptake_legend").delay(500).fadeIn();
+			$("#ffos_uptake_legend").delay(500).fadeIn();
 			$(".hl_seperator").hide();
 		}
 		
@@ -529,6 +534,7 @@ function switchViewToNumbers() {
 		return;
 		
 	$("#uptake_legend").fadeOut();
+	$("#ffos_uptake_legend").fadeOut();
 	$(".hl_seperator").fadeIn();
 	
 	$("#switch").attr("src", "images/switch_numbers_dark.png");
@@ -543,7 +549,8 @@ function switchViewToNumbers() {
 		//load the "plus_countries" file if we chose a country
 		var the_file;
 		if(countries_str != "All" 
-				&& (id == "chart_desktop_downloads" || id == "chart_desktop_adi" || id == "chart_mobile_downloads" || id == "chart_mobile_adi" || id == "chart_desktop_uptake")) {
+				//&& (id == "chart_desktop_downloads" || id == "chart_desktop_adi" || id == "chart_mobile_downloads" || id == "chart_mobile_adi" || id == "chart_desktop_uptake")
+			) {
 			the_file = "data/" + which_day() + "/" + id + "_plus_countries.json";
 		}
 		else {
@@ -552,16 +559,16 @@ function switchViewToNumbers() {
 			
 		d3.json(the_file, function(data) {
 			//first, let's bypass the fxos charts for now
-			if(id == "chart_fxos_activations" || id == "chart_fxos_uptake") {
+			/*if(id == "chart_fxos_activations" || id == "chart_fxos_adi" || id == "chart_fxos_uptake") {
 				$("#" + id + " div")
 					.css("font-weight", "300")
 					.css("font-size", "12px")
 					.html("<p style='padding:0;margin:0;padding-top:50px'>data currently<br />unavailable</p>");
 
 				return false;
-			}
+			}*/
 
-			if(id == "chart_desktop_uptake" || id == "chart_fxos_uptake") {
+			if(id == "chart_desktop_uptake") {
 				//TODO can't do the below until the uptake data is changed per my email to daniel on nov 1, 2012
 				//if we have a region, update counts so that we can continue to use d.count below
 				/*if(selectedRegion != "") {
@@ -587,6 +594,16 @@ function switchViewToNumbers() {
 				
 				html_content = "<div class='number_container'><div class='number shadow' style='height:80px'>" + avg + "<span class='last_letter'>%</span></div>"
 					+ "<div class='footnote shadow' style='height:18px'>worldwide users on " + LANG.latest_version + "</div></div>";
+			}
+			else if(id == "chart_ffos_devices") {
+				//for uptake, show max for latest version
+				//todo get the device with the max most recent count
+				//TODO
+				avg = d3.max(data.json_data[0].json_data, function(d) { return Number(d.count); });
+				avg = getHumanSize(avg);
+				
+				html_content = "<div class='number_container'><div class='number shadow' style='height:80px'>" + avg + "<span class='last_letter'>%</span></div>"
+					+ "<div class='footnote shadow' style='height:18px'>worldwide users on " + LANG.top_device + "</div></div>";
 			}
 			else if(id == "chart_mobile_reviews") {
 				var sum = d3.sum(data.json_data, function(d) { return d.count*d.rating; });
@@ -651,6 +668,7 @@ function switchViewToCharts() {
 	$("#switch").attr("class", "charts");
 		
 	$("#uptake_legend").delay(500).fadeIn();
+	$("#ffos_uptake_legend").delay(500).fadeIn();
 	$(".hl_seperator").hide();
 	
 	drawCharts();
@@ -671,16 +689,19 @@ function drawCharts() {
 			//load the "plus_countries" file if we chose a country
 			var the_file;
 			if(countries_str != "All" 
-					&& (id == "chart_desktop_downloads" || id == "chart_desktop_adi" || id == "chart_mobile_downloads" || id == "chart_mobile_adi" || id == "chart_desktop_uptake")) {
+					//&& (id == "chart_desktop_downloads" || id == "chart_desktop_adi" || id == "chart_mobile_downloads" || id == "chart_mobile_adi" || id == "chart_desktop_uptake")
+				) {
 				the_file = "data/" + which_day() + "/" + id + "_plus_countries.json";
 			}
 			else {
 				the_file = "data/" + which_day() + "/" + id + ".json";
 			}
+			
+			console.log("loading " + the_file);
 		
 			d3.json(the_file, function(data) { 
 				//first, let's bypass the fxos charts for now
-				if(id == "chart_fxos_activations" || id == "chart_fxos_adi" || id == "chart_fxos_uptake") {			
+				/*if(id == "chart_fxos_activations" || id == "chart_fxos_adi" || id == "chart_fxos_uptake") {			
 					$("#" + id + " div")
 						.css("font-weight", "300")
 						.css("font-size", "12px")
@@ -688,15 +709,57 @@ function drawCharts() {
 						.html("<p style='padding:0;margin:0;padding-top:50px'>data currently<br />unavailable</p>");
 
 					return false;
-				}
+				}*/
 
 				//we use draw for charts, except when we need specific renderings, e.g. for uptake
-				if(id == "chart_desktop_uptake" || id == "chart_fxos_uptake") {
+				if(id == "chart_desktop_uptake") {
 					//populate uptake legend
 					$("#uptake_legend #latest span").html(Math.round(data.json_data[3].version));
 					$("#uptake_legend #latest_minus_1 span").html(Math.round(data.json_data[2].version));
 					$("#uptake_legend #latest_minus_2 span").html(Math.round(data.json_data[1].version));
 					$("#uptake_legend #latest_minus_3 span").html(Math.round(data.json_data[0].version));
+					
+					drawMultipleLinesChart(data, "#" + id, "%");
+				}
+				else if(id == "chart_ffos_devices") {
+					//show only four devices
+					var new_data = {"json_data": []};
+					$.each(data.json_data, function(i, d) {
+						if($.inArray(d.device_name, devices_to_show) !== -1) {
+							console.log(d);
+							new_data.json_data.push(d)
+						}
+					});
+					
+					data = new_data;
+					console.log(new_data);
+					
+					
+					//resort dates because they aren't sorted in new json...ugh
+					//update dates (this is not needed if dates are received as timestamps)
+					$.each(data.json_data, function(index_outer, value_outer) {
+						console.log("value outer (fx version): ");console.log(value_outer);
+						/*$.each(value_outer.json_data, function(index_inner, value_inner) {
+							console.log("value inner (a data point for this version): ");console.log(value_inner);
+							value_outer.json_data[index_inner].date = +new Date(value_inner.date);
+						});*/
+						
+						//sort value_outer on count
+						sortBy(value_outer, 'date', false);
+					});
+					
+					
+					//populate uptake legend
+					console.log(data);
+					$("#ffos_uptake_legend #device1 span").html(nicifyDakeDeviceName(data.json_data[3].device_name));
+					$("#ffos_uptake_legend #device2 span").html(nicifyDakeDeviceName(data.json_data[2].device_name));
+					$("#ffos_uptake_legend #device3 span").html(nicifyDakeDeviceName(data.json_data[1].device_name));
+					$("#ffos_uptake_legend #device4 span").html(nicifyDakeDeviceName(data.json_data[0].device_name));
+					
+					
+					//TODO sort based on count from today if anurag can't do it on his end
+					//data.
+					
 					
 					drawMultipleLinesChart(data, "#" + id, "%");
 				}
@@ -713,6 +776,20 @@ function drawCharts() {
 
 		inc_delay=inc_delay+inc_delay_between_charts;
 	});
+}
+
+function sortBy(device, prop, asc) {
+	device.json_data.sort(function(a, b) {
+        if (asc) return (a[prop] > b[prop]) ? 1 : ((a[prop] < b[prop]) ? -1 : 0);
+        else return (b[prop] > a[prop]) ? 1 : ((b[prop] < a[prop]) ? -1 : 0);
+    });
+}
+
+function nicifyDakeDeviceName(name) {
+	if(name == "LG-D300") return "LG-D300";
+	else if(name == "ZTE Open") return "ZTE Open";
+	else if(name == "ALCATEL ONE TOUCH FIRE") return "Alcatel One Touch Fire";
+	else if(name == "unagi1") return "Unagi";
 }
 
 function which_day() {

@@ -33,6 +33,7 @@ function draw(data, container, format, smoothen) {
 				for(var j=0;j<exploded_countries.length;j++) {
 					//console.log("data.json_data[i].countries[0]."+exploded_countries[j]);
 					//console.log(eval("data.json_data[i].countries[0]."+exploded_countries[j]));
+					//console.log("HELLO ", data.json_data[i]);
 					sum_countries_count += eval("data.json_data[i].countries[0]."+exploded_countries[j]);
 					//console.log(j + " :: sum_countries_count is " + sum_countries_count);
 				}
@@ -274,6 +275,56 @@ function draw(data, container, format, smoothen) {
 										.remove();
 								});
 				});
+   			
+	/*svg.selectAll("circle")
+		.on('mouseover.tooltip', function(d) {
+			d3.selectAll(".tooltip").remove(); //timestamp is used as id
+			d3.select(which_metric + " svg")
+				.append("svg:rect")
+					.attr("width", 40)
+					.attr("height", 15)
+					.attr("x", xScale(d.date)-22)
+					.attr("y", function() { return yScale(d.count)-25; })
+					.attr("class", "tooltip_box");
+						
+			d3.select(which_metric + " svg")
+				.append("text")
+					.text(function() { return getHumanSize(d.count); })
+					.attr("x", xScale(d.date))
+					.attr("y", function() { return yScale(d.count)-13; })
+					.attr("id", d.date)
+					.attr("dy", "0.35m")
+					.attr("text-anchor", "middle")
+					.attr("class", "tooltip");
+		})
+		.on('mouseout.tooltip', function(d) {
+			d3.select(".tooltip_box").remove();
+			d3.select(".tooltip")
+				.transition()
+				.duration(200)
+				.style("opacity", 0)
+				.attr("transform", "translate(0,-10)")
+				.remove();
+		})
+		.on('mouseover', function(d) {				
+			d3.select(this)
+				.transition()
+		    	.attr('r', 9);
+		}).on('mouseout', function() {
+      		d3.select(this)
+				.transition()
+			   	.attr('r', 4);
+      	})
+		.append("text")
+			.text(function(d) {
+		    	return d.count;
+		})
+		.attr('class', 'line_label')
+		.attr("x", function(d) {
+   			return xScale(d.date)-5;
+		})
+		.attr("y", function(d) { return yScale(d.count); });
+		*/
 }
 
 
@@ -502,7 +553,16 @@ function drawMultipleLinesChart(data, container, format) {
 	   		.enter()
    				.append("circle")
    				//.attr('class','point')
-	   			.attr('class', "version" + data_version.version)
+	   			.attr('class', function() {
+	   				var version;
+	   				
+	   				if(isNaN(data_version.version)) 
+	   					version = "version" + data_version.device_name;
+	   				else
+	   					version = "version" + data_version.version;
+	   					
+	   				return version;
+	   			})
    				.attr('fill', color(index))
    				.attr('opacity', function(d, i) {
 					//we don't want points for charts with more than one line, 
@@ -728,3 +788,52 @@ function drawMobileReviews(data, container, format) {
 				return h-yScale(d.count);
 			});
 }
+
+
+//draws a treemap
+/*function drawTreeMap(json, container, format) {
+	var w = 220,
+		h = 100,
+		left = 15,
+		top = 14,
+		//color = d3.scale.category20c();
+		color = d3.scale.ordinal()
+			.domain(["1", "2", "3", "4", "5"])
+			.range(["#ff6f31", "#ff9f02", "#ffcf02", "#a4cc02", "#88b131"]);
+
+	//we always use the div within the container for placing the svg
+	container += " div";
+	
+	//for clarity, we reassign
+	var which_metric = container;
+    
+	var treemap = d3.layout.treemap()
+    	.size([w, h])
+	    .sticky(true)
+    	.value(function(d) { return d.size; });
+
+	var div = d3.select(container).append("div")
+    	.style("position", "relative")
+    	.style("background-color", "black")
+    	.style("left", left + "px")
+    	.style("top", top + "px")
+	    .style("width", w + "px")
+    	.style("height", h + "px");
+
+	div.data([json]).selectAll("div")
+		.data(treemap.nodes)
+		.enter().append("div")
+			.attr("class", "treemap_cell")
+			.style("background", function(d) { return (d.name) ? color(d.name.substring(0,1)) : color(d.name); })
+			.call(cell)
+			.text(function(d) { return d.children ? null : d.name; });
+	
+	function cell() {
+  		this
+      		.style("left", function(d) { return d.x + "px"; })
+	      	.style("top", function(d) { return d.y + "px"; })
+    		.style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+      		.style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+	}
+}
+*/

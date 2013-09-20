@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<!-- Ali Almossawi, Mozilla Metrics Team, San Francisco, December 2012 -->
+		<!-- Ali Almossawi, Mozilla Metrics Team, San Francisco, 2012 -->
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<title>Headline Indicators for Firefox</title>
-		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js" type="text/javascript"></script>
-   		
    		<script src="js/jquery.uniform.min.js" type="text/javascript" charset="utf-8"></script>
+   		<!--<script src="http://d3js.org/d3.v2.js"></script>-->
    		<script type="text/javascript" src="js/d3.js"></script>
    		<script type="text/javascript" src="js/jquery.hoverIntent.minified.js"></script>
    		<script type="text/javascript" src="js/charts.js"></script>
@@ -55,12 +54,12 @@ s.parentNode.insertBefore(ga, s);
 			<img src="images/title.png" id="title" alt="Headline Indicators for Firefox" />
 			
 			<div id="chart_container_container">
-				<div class="chart_container" id="chart_desktop_downloads">
-					<span class="container_title">Downloads</span>
-					<div></div>
-				</div>
 				<div class="chart_container" id="chart_desktop_adi">
 					<span class="container_title">ADI</span>
+					<div></div>
+				</div>
+				<div class="chart_container" id="chart_desktop_downloads">
+					<span class="container_title">Downloads</span>
 					<div></div>
 				</div>
 				<div class="chart_container" id="chart_desktop_uptake">
@@ -68,12 +67,12 @@ s.parentNode.insertBefore(ga, s);
 					<div></div>
 				</div>
 				
-				<div class="chart_container" id="chart_mobile_downloads">
-					<span class="container_title">Downloads</span>
-					<div></div>
-				</div>
 				<div class="chart_container" id="chart_mobile_adi">
 					<span class="container_title">ADI</span>
+					<div></div>
+				</div>
+				<div class="chart_container" id="chart_mobile_downloads">
+					<span class="container_title">Downloads</span>
 					<div></div>
 				</div>
 				<div class="chart_container" id="chart_mobile_reviews">
@@ -81,17 +80,18 @@ s.parentNode.insertBefore(ga, s);
 					<div></div>
 				</div>
 				
-				<div class="chart_container" id="chart_fxos_activations">
-					<span class="container_title">Activations</span>
-					<div></div>
-				</div>
 				<div class="chart_container" id="chart_ffos_adi">
 					<span class="container_title">ADI</span>
 					<div></div>
 				</div>
-				<div class="chart_container" id="chart_fxos_uptake">
+				<div class="chart_container" id="chart_ffos_devices">
 					<span class="container_title">Devices</span>
 					<div></div>
+				</div>
+				<div class="chart_container_down" id="chart_fxos_activations">
+					<!--<span class="container_title">Activations</span>
+					<div></div>-->
+					<!--<img src="images/firefoxos.png" style="width:60%;margin-top:15px;margin-left:-40px" />-->
 				</div>
 			</div>
 
@@ -114,6 +114,15 @@ s.parentNode.insertBefore(ga, s);
 					<li id="latest_minus_2"><div style="background-color:#ffd300"></div><span></span></li>
 					<li id="latest_minus_1"><div style="background-color:#ed06f0"></div><span></span></li>
 					<li id="latest"><div style="background-color:#18ff00"></div><span></span></li>
+				</ul>
+			</div>
+			
+			<div id="ffos_uptake_legend">
+				<ul>
+					<li id="device3"><div style="background-color:#ffd300"></div><span></span></li><br />
+					<li id="device1"><div style="background-color:#18ff00"></div><span></span></li><br />
+					<li id="device2"><div style="background-color:#ff0000"></div><span></span></li><br />
+					<li id="device4"><div style="background-color:#ed06f0"></div><span></span></li><br />
 				</ul>
 			</div>
 			
@@ -444,6 +453,15 @@ s.parentNode.insertBefore(ga, s);
 								<li><a href="#" code="SR" onclick="return false">Suriname</a></li>
 								<li><a href="#" code="UY" onclick="return false">Uruguay</a></li>
 								<li><a href="#" code="VE" onclick="return false">Venezuela</a></li>
+							</ul>
+						</div>
+					<h3><a href="#">Firefox OS Markets</a></h3>
+						<div>
+							<ul>
+								<li><a href="#" code="BR" onclick="return false">Brazil</a></li>
+								<li><a href="#" code="CO" onclick="return false">Colombia</a></li>
+								<li><a href="#" code="PL" onclick="return false">Poland</a></li>
+								<li><a href="#" code="ES" onclick="return false">Spain</a></li>
 							</ul>
 						</div>
 				</div>

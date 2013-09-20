@@ -76,7 +76,8 @@ ul li a, ul li a:active, ul li a:link, ul li a:visited, ul li a:hover {
 	text-decoration:none;
 }
 
-.chart_container {
+.chart_container,
+.chart_container_down {
 	font-weight:200;
 	font-size:18px;
 	float:left;
@@ -89,11 +90,13 @@ ul li a, ul li a:active, ul li a:link, ul li a:visited, ul li a:hover {
 	color:white;
 }
 
-.chart_container span {
+.chart_container span,
+.chart_container_down span {
 	margin-left:20px;
 }
 
-.chart_container svg {
+.chart_container svg,
+.chart_container_down svg {
 	background-color:black;
 	margin-top:5px;
 	border:0px solid #494949;
@@ -105,7 +108,8 @@ ul li a, ul li a:active, ul li a:link, ul li a:visited, ul li a:hover {
 	font-weight:300;
 }
 
-.chart_container div {
+.chart_container div,
+.chart_container_down div {
 	background-color:black;
 	background-image:url('../images/loading.png');
 	background-position:50% 50%;
@@ -375,7 +379,14 @@ line {
 	top:50px;
 }
 
-#uptake_legend ul li {
+#ffos_uptake_legend {
+	position:absolute;
+	left:730px;
+	bottom:165px;
+}
+
+#uptake_legend ul li,
+#ffos_uptake_legend ul li {
 	display:inline;
 	color:white;
 	font-size:8.5pt;
@@ -383,7 +394,8 @@ line {
 	float:left;
 }
 
-#uptake_legend ul li div {
+#uptake_legend ul li div,
+#ffos_uptake_legend ul li div {
 	width:9px;
 	height:9px;
 	background-color:#fff;
