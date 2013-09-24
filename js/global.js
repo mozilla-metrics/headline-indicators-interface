@@ -19,7 +19,9 @@ var regions = new Object();
 	regions["SOAM"] 	= "AR,BO,BR,CL,CO,EC,FK,GF,GY,PY,PE,SR,UY,VE";
 	regions["NOAM"] 	= "AI,AG,AW,BS,BB,BZ,BM,VG,CA,KY,CR,CU,DM,DO,SV,GL,GD,GP,GT,HT,HN,JM,MQ,MS,MX,AN,NI,PA,PR,KN,LC,PM,VC,TT,TC,US,VI";
 
-var devices_to_show = ["LG-D300", "unagi1", "ALCATEL ONE TOUCH FIRE", "ZTE Open"];
+var available_countries = ["AS","AU","BV","IO","BN","KH","CN","CX","CC","CK","FJ","PF","TF","GU","HM","HK","ID","JP","KI","LA","MO","MY","MH","FM","NR","NC","NZ","NU","NF","MP","KP","PW","GN","PH","PN","WS","SG","SB","GS","KR","TW","TH","TL","TO","TK","TV","UM","VU","VN","WF","AF","AM","AZ","BD","BT","MM","IN","KZ","KG","MV","MN","NP","PK","LK","TJ","TM","UZ","AL","AD","AT","BY","BE","BA","BG","HR","CY","CZ","DK","DE","EE","FO","FI","FR","GE","DE","GI","GR","GG","HU","IS","IE","IM","IT","JE","LV","LI","LT","LU","MK","MT","FR","MD","MC","ME","NL","NO","PL","PT","RO","RU","SM","RS","ME","SK","SI","ES","SJ","SE","CH","TR","UA","GB","VA","AX","DZ","AO","BH","BJ","BW","BF","BI","CM","CV","CF","TD","KM","CG","CI","DJ","EG","GQ","ER","ET","GA","GM","GH","GN","GW","IR","IQ","IL","JO","KE","KW","LB","LS","LR","LY","MG","MW","ML","MR","MU","YT","MA","MZ","NA","NE","NG","OM","PS","QA","RW","RE","SH","ST","SA","SN","SC","SL","SO","ZA","SD","SZ","SY","TZ","TG","TN","UG","AE","EH","YE","ZM","ZW","AR","BO","BR","CL","CO","EC","FK","GF","GY","PY","PE","SR","UY","VE","AI","AG","AW","BS","BB","BZ","BM","VG","CA","KY","CR","CU","DM","DO","SV","GL","GD","GP","GT","HT","HN","JM","MQ","MS","MX","AN","NI","PA","PR","KN","LC","PM","VC","TT","TC","US","VI"];
+
+var devices_to_show = ["ALCATEL ONE TOUCH FIRE", "ZTE Open"];
 	
 $(document).ready(function () {	
 	//prepend the more info link to all charts
@@ -724,6 +726,7 @@ function drawCharts() {
 					
 					drawMultipleLinesChart(data, "#" + id, "%");
 				}
+				//this entire block is a disaster, don't judge me; the json format got changed for no reason, hence this butt-ugly block of code
 				else if(id == "chart_ffos_devices") {
 					//show only four devices
 					var new_data = {"json_data": []};
@@ -737,7 +740,40 @@ function drawCharts() {
 					data = new_data;
 					console.log(new_data);
 					
-					
+					//fill in missing regions (god, have mercy...)
+					$.each(data.json_data, function(index_outer, value_outer) {
+						console.log("value outer (device): ");console.log(value_outer);
+						$.each(value_outer.json_data, function(index_inner, value_inner) {
+							console.log("value inner (a data point for this version): ");
+							console.log(value_inner);
+							
+							//check its regions, if any are missing, set to 0
+							if(value_inner.regions[0]["ASIA"] == undefined) {
+								value_outer.json_data[index_inner].regions[0]["ASIA"] = "0";
+							}
+							if(value_inner.regions[0]["NOAM"] == undefined) {
+								value_outer.json_data[index_inner].regions[0]["NOAM"] = "0";
+							}
+							if(value_inner.regions[0]["SOAM"] == undefined) {
+								value_outer.json_data[index_inner].regions[0]["SOAM"] = "0";
+							}
+							if(value_inner.regions[0]["EMEA"] == undefined) {
+								value_outer.json_data[index_inner].regions[0]["EMEA"] = "0";
+							}
+
+							//if we have countries, check for missing ones
+							if(value_inner.countries != undefined) {
+								//check its countries, if any are missing, set to 0
+								$.each(available_countries, function(countries_i, countries_d) {
+									//console.log(value_inner.countries[0][countries_d]);
+									if(value_inner.countries[0][countries_d] == undefined) {
+										value_outer.json_data[index_inner].countries[0][countries_d] = "0";
+									}
+								});
+							}	
+						});
+					});
+
 					//resort dates because they aren't sorted in new json...ugh
 					//update dates (this is not needed if dates are received as timestamps)
 					$.each(data.json_data, function(index_outer, value_outer) {
@@ -748,16 +784,16 @@ function drawCharts() {
 						});*/
 						
 						//sort value_outer on count
-						sortBy(value_outer, 'date', false);
+						sortBy(value_outer, 'date', true);
 					});
 					
 					
 					//populate uptake legend
 					console.log(data);
-					$("#ffos_uptake_legend #device1 span").html(nicifyDakeDeviceName(data.json_data[3].device_name));
-					$("#ffos_uptake_legend #device2 span").html(nicifyDakeDeviceName(data.json_data[2].device_name));
-					$("#ffos_uptake_legend #device3 span").html(nicifyDakeDeviceName(data.json_data[1].device_name));
-					$("#ffos_uptake_legend #device4 span").html(nicifyDakeDeviceName(data.json_data[0].device_name));
+					$("#ffos_uptake_legend #device2 span").html(nicifyDakeDeviceName(data.json_data[1].device_name));
+					$("#ffos_uptake_legend #device1 span").html(nicifyDakeDeviceName(data.json_data[0].device_name));
+					//$("#ffos_uptake_legend #device2 span").html(nicifyDakeDeviceName(data.json_data[2].device_name));
+					//$("#ffos_uptake_legend #device4 span").html(nicifyDakeDeviceName(data.json_data[0].device_name));
 					
 					
 					//TODO sort based on count from today if anurag can't do it on his end

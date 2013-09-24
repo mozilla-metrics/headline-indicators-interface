@@ -1,6 +1,6 @@
 {
-	"latest_version": "Firefox 18",
-	"top_device": "Alcatel OTF",
+	"latest_version": "Firefox 23",
+	"top_device": "Alcatel",
 	"chart_desktop_downloads": {
 		"what": "The number of requests sent to the Mozilla download server for a copy of the Firefox application (all channels).",
 		"how": "The downloads count is an absolute count of said requests during the course of a day for a given time period.  It only considers requests that are serviced by Mozilla.org's servers and hence does not include those serviced by mirrors or third-party locations."

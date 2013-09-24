@@ -33,7 +33,6 @@ function draw(data, container, format, smoothen) {
 				for(var j=0;j<exploded_countries.length;j++) {
 					//console.log("data.json_data[i].countries[0]."+exploded_countries[j]);
 					//console.log(eval("data.json_data[i].countries[0]."+exploded_countries[j]));
-					//console.log("HELLO ", data.json_data[i]);
 					sum_countries_count += eval("data.json_data[i].countries[0]."+exploded_countries[j]);
 					//console.log(j + " :: sum_countries_count is " + sum_countries_count);
 				}
@@ -198,12 +197,18 @@ function draw(data, container, format, smoothen) {
 	//draw the line
 	var line = d3.svg.line()
 		.x(function(d){ return xScale(d.date); })
-		.y(function(d){ return yScale(d.count); })
+		.y(function(d){
+			if(isNaN(d.count)) return 0;
+			return yScale(d.count);
+		})
 		.interpolate("basis");
 		
 	var flat_line = d3.svg.line()
 		.x(function(d){ return xScale(d.date)})
-		.y(function(d){ return yScale(d3.min(data.json_data).count)})
+		.y(function(d){
+			if(isNaN(d3.min(data.json_data).count)) return 0;
+			return yScale(d3.min(data.json_data).count)
+		})
 		.interpolate("basis");
 
 	var paths = svg.append("svg:path")
@@ -223,7 +228,10 @@ function draw(data, container, format, smoothen) {
    			.attr("cx", function(d) {
         		return xScale(d.date);
    			})
-   			.attr("cy", function(d) { return yScale(d.count); })
+   			.attr("cy", function(d) {
+				if(isNaN(d.count)) return 0;
+				return yScale(d.count);
+			})
    			.transition()
    			.delay(function(d,i) { return i / data.json_data.length * enter_animation_duration})
    			.attr("r", 4)
@@ -252,7 +260,10 @@ function draw(data, container, format, smoothen) {
 									.attr("width", 40)
 									.attr("height", 15)
 									.attr("x", xScale(d.date)-22)
-									.attr("y", function() { return yScale(d.count)-25; })
+									.attr("y", function() {
+										if(isNaN(d.count)) return 0;
+										return yScale(d.count)-25;
+									})
 									.attr("class", "tooltip_box");
 						
 							d3.select(which_metric + " svg")

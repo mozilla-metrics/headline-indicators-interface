@@ -455,12 +455,12 @@ img.moreinfo {
 	position:fixed;
 	top:50%;
 	left:50%;
-	margin-top:-330px;
+	margin-top:-350px;
 	margin-left:-380px;
 	z-index:9999999999;
 	background-color:#fff;
 	width:700px;
-	height:600px;
+	height:650px;
 	background-image:url(../images/bg-sand.png);
 	display:none;
 }
