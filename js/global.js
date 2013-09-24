@@ -601,8 +601,8 @@ function switchViewToNumbers() {
 			else if(id == "chart_ffos_devices") {
 				//for uptake, show max for top device
 				//get the device with the max most recent count (can't do [0] because, ugh...json is not in expected format)
-				console.log(data.json_data);
-				avg = d3.max(data.json_data, function(d) { return Number(d.json_data[0].count); });
+				console.log(data.json_data[39]);
+				avg = d3.max(data.json_data[39].json_data, function(d) { return Number(d.count); });
 				//avg = d3.max(data.json_data[0].json_data, function(d) { return Number(d.count); });
 				avg = getHumanSize(avg);
 				
@@ -744,8 +744,8 @@ function drawCharts() {
 					$.each(data.json_data, function(index_outer, value_outer) {
 						console.log("value outer (device): ");console.log(value_outer);
 						$.each(value_outer.json_data, function(index_inner, value_inner) {
-							console.log("value inner (a data point for this version): ");
-							console.log(value_inner);
+							//console.log("value inner (a data point for this version): ");
+							//console.log(value_inner);
 							
 							//check its regions, if any are missing, set to 0
 							if(value_inner.regions[0]["ASIA"] == undefined) {
@@ -777,7 +777,7 @@ function drawCharts() {
 					//resort dates because they aren't sorted in new json...ugh
 					//update dates (this is not needed if dates are received as timestamps)
 					$.each(data.json_data, function(index_outer, value_outer) {
-						console.log("value outer (fx version): ");console.log(value_outer);
+						//console.log("value outer (fx version): ");console.log(value_outer);
 						/*$.each(value_outer.json_data, function(index_inner, value_inner) {
 							console.log("value inner (a data point for this version): ");console.log(value_inner);
 							value_outer.json_data[index_inner].date = +new Date(value_inner.date);
