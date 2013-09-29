@@ -5,6 +5,7 @@ var business_selected = true,
 	engineering_selected = true,
 	operations_selected = true,
 	selectedCountries = new Object(),
+	top_device = "ALCATEL ONE TOUCH FIRE",
 	gracefully_backdate_to = "";
 	
 //changing these parameters triggers new queries
@@ -602,9 +603,8 @@ function switchViewToNumbers() {
 				//for uptake, show max for top device
 				//get the device with the max most recent count (can't do [0] because, ugh...json is not in expected format)
 				$.each(data.json_data, function(i, d) {
-                    if(d.device_name == "ALCATEL ONE TOUCH FIRE") {
+                    if(d.device_name == top_device) {
                         avg = d3.max(d.json_data, function(d) { return Number(d.count); });                 
-                        console.log(avg);
                     }
                 });
 				
