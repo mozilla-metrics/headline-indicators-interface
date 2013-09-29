@@ -601,8 +601,13 @@ function switchViewToNumbers() {
 			else if(id == "chart_ffos_devices") {
 				//for uptake, show max for top device
 				//get the device with the max most recent count (can't do [0] because, ugh...json is not in expected format)
-				console.log(data.json_data[39]);
-				avg = d3.max(data.json_data[39].json_data, function(d) { return Number(d.count); });
+				$.each(data.json_data, function(i, d) {
+                    if(d.device_name == "ALCATEL ONE TOUCH FIRE") {
+                        avg = d3.max(d.json_data, function(d) { return Number(d.count); });                 
+                        console.log(avg);
+                    }
+                });
+				
 				//avg = d3.max(data.json_data[0].json_data, function(d) { return Number(d.count); });
 				avg = getHumanSize(avg);
 				
